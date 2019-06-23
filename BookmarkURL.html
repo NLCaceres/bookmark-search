@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <title>Check Out These Sites!</title>
+
+    <style type="text/css">
+      body {
+        background-color: #8ed081;
+      }
+
+      h1 {
+        margin: auto;
+        width: 400px;
+      }
+
+      table,
+      th,
+      td {
+        margin: auto;
+        border: 1px solid black;
+      }
+
+      td,
+      th {
+        width: 100px;
+        height: 50px;
+      }
+
+      th {
+        background-color: #4caf50;
+        color: black;
+      }
+      tr {
+        background-color: gainsboro;
+      }
+
+      #search-bar {
+        margin: auto;
+        width: 550px;
+        padding-top: 30px;
+        padding-left: 50px;
+        padding-bottom: 20px;
+      }
+      .search {
+        display: inline;
+      }
+      #search-items {
+        width: 350px;
+      }
+      #search-button {
+        width: 75px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="container">
+      <h1>Look Up Some Websites!</h1>
+
+      <div id="search-bar">
+        <input
+          class="search"
+          type="text"
+          id="search-items"
+          name="search-item"
+          placeholder="Enter keywords and see what's on the list!"
+          onkeyup="enterPressed(event);"
+          autofocus
+        />
+
+        <!--
+		<select class="search" name="search-options" id="search-type">
+			<option value="general">General</option>
+			<option value="name">Name</option>
+			<option value="url">URL</option>
+			<option value="category">Category</option>
+			<option value="keywords">Keywords</option>
+		</select> -->
+
+        <input
+          class="search"
+          type="button"
+          id="search-button"
+          onclick="searchNow();"
+          value="Search"
+        />
+      </div>
+
+      <table id="search-results">
+        <!--
+			<tr>
+				<th>Website Name</th>
+				<th>Website URL</th>
+				<th>Website Category</th>
+				<th colspan="4">Website Keywords</th>
+			</tr>
+			
+			<tr>
+				<td>Revzilla</td>
+				<td>revzilla.com</td>
+				<td>Online marketplace</td>
+				<td>motorcycle</td>
+				<td>marketplace</td>
+				<td>gear</td>
+				<td>motorsports</td>
+			</tr>
+			<tr>
+				<td>Amazon</td>
+				<td>amazon.com</td>
+				<td>Online marketplace</td>
+				<td>marketplace</td>
+				<td>shopping</td>
+				<td>general store</td>
+				<td>delivery</td>
+			</tr>
+			-->
+      </table>
+    </div>
+
+    <script type="text/javascript">
+      var websiteName = [
+        "Revzilla",
+        "Amazon",
+        "Facebook",
+        "Youtube",
+        "Vimeo",
+        "Wall Street Journal",
+        "Wikipedia",
+        "Twitter",
+        "Craigslist",
+        "CNN",
+        "ESPN",
+        "Rotten Tomatoes",
+        "PCMag",
+        "Billboard",
+        "POGO",
+        "Instagram",
+        "Ebay",
+        "Github",
+        "Paypal",
+        "Venmo",
+        "Twitch",
+        "Walmart",
+        "Target",
+        "Addicting Games"
+      ];
+
+      var websiteURL = [
+        "revzilla.com",
+        "amazon.com",
+        "facebook.com",
+        "youtube.com",
+        "vimeo.com",
+        "wsj.com",
+        "wikipedia.com",
+        "twitter.com",
+        "craigslist.org",
+        "cnn.com",
+        "espn.com",
+        "rottentomatoes.com",
+        "pcmag.com",
+        "billboard.com",
+        "pogo.com",
+        "instagram.com",
+        "ebay.com",
+        "github.com",
+        "paypal.com",
+        "venmo.com",
+        "twitch.tv",
+        "walmart.com",
+        "target.com",
+        "addictinggames.com"
+      ];
+
+      var websiteCategory = [
+        "Online marketplace",
+        "Online marketplace",
+        "Social network",
+        "Online videos",
+        "Online videos",
+        "News",
+        "Education",
+        "Social network",
+        "Online marketplace",
+        "News",
+        "Sports",
+        "Movies",
+        "Technology",
+        "Music",
+        "Online gaming",
+        "Photos",
+        "Online marketplace",
+        "Software",
+        "Online payment",
+        "Online payment",
+        "Streaming",
+        "Storefront",
+        "Storefront",
+        "Online gaming"
+      ];
+      var websiteKeywords = [
+        ["motorcycle", "marketplace", "gear", "motorsports"],
+        ["marketplace", "shopping", "general store", "delivery"],
+        ["social", "friends", "messaging", "posting"],
+        ["videos", "music", "television", "vlog"],
+        ["videos", "films", "animation", "music"],
+        ["news", "worldwide", "United States", "topical"],
+        ["education", "information", "knowledge", "topical"],
+        ["social", "blog", "news", "media"],
+        ["marketplace", "auction", "general store", "listings"],
+        ["news", "worldwide", "United States", "topical"],
+        ["news", "United States", "sports", "scores"],
+        ["movies", "news", "ratings", "reviews"],
+        ["ratings", "reviews", "technology", "computers"],
+        ["music", "ratings", "reviews", "news"],
+        ["games", "casino", "strategy", "puzzle"],
+        ["photos", "pictures", "cats", "media"],
+        ["marketplace", "auction", "general store", "listings"],
+        ["technology", "software", "open source", "development"],
+        ["payment", "debit", "credit", "money"],
+        ["payment", "debit", "credit", "money"],
+        ["streaming", "video", "gaming", "channels"],
+        ["store", "essentials", "cheap", "warehouse"],
+        ["store", "essentials", "cheap", "department"],
+        ["games", "casino", "strategy", "puzzle"]
+      ];
+
+      function searchNow() {
+        var searchWords = document.getElementById("search-items").value;
+        var searchWordRE = new RegExp(searchWords, "i");
+        var indexs = [];
+        // var searchType = document.getElementById('search-type').value;
+        for (var i = 0; i < websiteName.length; i++) {
+          if (searchWordRE.test(websiteName[i])) {
+            indexs.push(i);
+          }
+        }
+        for (var i = 0; i < websiteURL.length; i++) {
+          if (searchWordRE.test(websiteURL[i])) {
+            if (!contains(indexs, i)) {
+              indexs.push(i);
+            }
+          }
+        }
+        for (var i = 0; i < websiteCategory.length; i++) {
+          if (searchWordRE.test(websiteCategory[i])) {
+            if (!contains(indexs, i)) {
+              indexs.push(i);
+            }
+          }
+        }
+        for (var i = 0; i < websiteKeywords.length; i++) {
+          for (var j = 0; j < websiteKeywords[i].length; j++) {
+            if (searchWordRE.test(websiteKeywords[i][j])) {
+              if (!contains(indexs, i)) {
+                indexs.push(i);
+                break;
+              }
+            }
+          }
+        }
+
+        document.querySelector("#search-results").innerHTML = "";
+
+        document.querySelector("#search-results").innerHTML +=
+          '<tr> \n <th> Website Name </th> \n <th> Website URL </th> \n <th> Website Category </th> <th colspan="4"> Website Keywords </th> \n </tr>\n';
+
+        for (var i = 0; i < indexs.length; i++) {
+          document.querySelector("#search-results").innerHTML +=
+            "<tr> \n <td>" +
+            websiteName[indexs[i]] +
+            "</td> \n <td>" +
+            websiteURL[indexs[i]] +
+            "</td> \n <td>" +
+            websiteCategory[indexs[i]] +
+            "</td> \n <td>" +
+            websiteKeywords[indexs[i]][0] +
+            "</td> \n <td>" +
+            websiteKeywords[indexs[i]][1] +
+            "</td> \n <td>" +
+            websiteKeywords[indexs[i]][2] +
+            "</td> \n <td>" +
+            websiteKeywords[indexs[i]][3] +
+            "</td> \n </tr> \n";
+        }
+      }
+
+      function enterPressed(event) {
+        if (event.keyCode != 13) {
+          return;
+        }
+
+        var searchWords = document.getElementById("search-items").value;
+        var searchWordRE = new RegExp(searchWords, "i");
+        var indexs = [];
+        // var searchType = document.getElementById('search-type').value;
+        for (var i = 0; i < websiteName.length; i++) {
+          if (searchWordRE.test(websiteName[i])) {
+            indexs.push(i);
+          }
+        }
+        for (var i = 0; i < websiteURL.length; i++) {
+          if (searchWordRE.test(websiteURL[i])) {
+            if (!contains(indexs, i)) {
+              indexs.push(i);
+            }
+          }
+        }
+        for (var i = 0; i < websiteCategory.length; i++) {
+          if (searchWordRE.test(websiteCategory[i])) {
+            if (!contains(indexs, i)) {
+              indexs.push(i);
+            }
+          }
+        }
+        for (var i = 0; i < websiteKeywords.length; i++) {
+          for (var j = 0; j < websiteKeywords[i].length; j++) {
+            if (searchWordRE.test(websiteKeywords[i][j])) {
+              if (!contains(indexs, i)) {
+                indexs.push(i);
+                break;
+              }
+            }
+          }
+        }
+
+        document.querySelector("#search-results").innerHTML = "";
+
+        document.querySelector("#search-results").innerHTML +=
+          '<tr> \n <th> Website Name </th> \n <th> Website URL </th> \n <th> Website Category </th> <th colspan="4"> Website Keywords </th> \n </tr>\n';
+
+        for (var i = 0; i < indexs.length; i++) {
+          document.querySelector("#search-results").innerHTML +=
+            "<tr> \n <td>" +
+            websiteName[indexs[i]] +
+            "</td> \n <td>" +
+            websiteURL[indexs[i]] +
+            "</td> \n <td>" +
+            websiteCategory[indexs[i]] +
+            "</td> \n <td>" +
+            websiteKeywords[indexs[i]][0] +
+            "</td> \n <td>" +
+            websiteKeywords[indexs[i]][1] +
+            "</td> \n <td>" +
+            websiteKeywords[indexs[i]][2] +
+            "</td> \n <td>" +
+            websiteKeywords[indexs[i]][3] +
+            "</td> \n </tr> \n";
+        }
+      }
+
+      function contains(a, obj) {
+        var i = a.length;
+        while (i >= 0) {
+          if (a[i] === obj) {
+            return true;
+          }
+          i--;
+        }
+        return false;
+      }
+    </script>
+  </body>
+</html>
